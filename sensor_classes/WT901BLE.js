@@ -191,10 +191,16 @@ class WT901BLE extends   WT901Sensor {
       /**
        * Setup connection
       */
-      async initGATTConnection(isReconnecting = false) {
-        this.debug('in initGATTConnection')
+      async initGATTConnection(isReconnecting = true) {
+        this.debug('in initGATTConnection ${isReconnecting}')
         // base class connects to device
-        await super.initGATTConnection(isReconnecting);
+        await this.connectDevice(true, 5, 5);
+        this.device.on("disconnect", async () => {
+            this.debug("WARNING: WT901BLE disconnected")
+            await this.initGATTConnection(true);
+            await this.initGATTNotifications()
+    })
+
 
         // Set up GATT characteristics
         const gattServer = await this.device.gatt();

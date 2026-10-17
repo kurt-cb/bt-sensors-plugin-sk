@@ -11,7 +11,11 @@ class GoveeH5074 extends  GoveeSensor {
         this.addDefaultParam("zone")
 
         this.addDefaultPath("temp","environment.temperature")
-            .read= (buffer)=>{return 273.15+(buffer.readUInt16LE(1)/100) }
+            .read= (buffer)=>{
+		    const v = buffer.readInt16LE(1)
+		    this.debug(`temp=${v}`)
+		    return 273.15+(v/100) 
+	    }
         
         this.addDefaultPath("humidity", "environment.humidity")
             .read = (buffer)=>{return buffer.readUInt16LE(3)/10000}   

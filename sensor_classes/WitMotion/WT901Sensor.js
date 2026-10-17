@@ -42,6 +42,7 @@ class WT901Sensor extends  BTSensor {
     }
 
     processData(Bytes) {
+        //this.debug(Buffer.from(Bytes).toString('hex'))
         if (Bytes[1] === 0x61) {
             let Ax = this.getSignInt16((Bytes[3] << 8) | Bytes[2]) / 32768 * 16;
             let Ay = this.getSignInt16((Bytes[5] << 8) | Bytes[4]) / 32768 * 16;
@@ -53,6 +54,7 @@ class WT901Sensor extends  BTSensor {
             let AngY = this.getSignInt16((Bytes[17] << 8) | Bytes[16]) / 32768 * 180;
             let AngZ = this.getSignInt16((Bytes[19] << 8) | Bytes[18]) / 32768 * 180;
 
+            this.debug("translating data")
             this.set("AccX", Math.round(Ax * 1000) / 1000);
             this.set("AccY", Math.round(Ay * 1000) / 1000);
             this.set("AccZ", Math.round(Az * 1000) / 1000);

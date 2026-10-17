@@ -26,8 +26,10 @@ class GoveeSensor extends  BTSensor {
     getPackedTempAndHumidity(buffer, beg )
     {
         const negative=buffer[beg]&0x80
+	const val = buffer.readIntBE(beg, 3)
+	this.debug(`temp: ${val}`)
         return {
-            packedValue: ((buffer.readIntBE(beg,3))&0xFFFFFF) ^ (negative?0x800000:0x000000),
+            packedValue: ((buffer.readIntBE(beg,3))&0xFFFFFF) ^ (negative?nv:0x000000),
             tempIsNegative: negative
         }
     }
